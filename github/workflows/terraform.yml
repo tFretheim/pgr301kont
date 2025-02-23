@@ -1,0 +1,90 @@
+# .github/workflows/terraform.yml
+name: 'Terraform Pipeline'
+
+# Endret fra bare workflow_dispatch til automatiske triggere
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infrastructure/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'infrastructure/**'
+  workflow_dispatch:  # Beholder manuell trigger som backup
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  TF_DIR: "infrastructure"
+
+jobs:
+  terraform:
+    name: 'Terraform Workflow'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: ${{ env.TF_DIR }}
+        env:
+          # Bruker GitHub Secrets for API token
+          STATUSCAKE_API_TOKEN: ${{ secrets.STATUSCAKE_API_TOKEN }}
+
+      - name: Terraform Format
+        run: terraform fmt -check
+        working-directory: ${{ env.TF_DIR }}
+
+      # Plan kjører på alle branches
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        working-directory: ${{ env.TF_DIR }}
+        env:
+          STATUSCAKE_API_TOKEN: ${{ secrets.STATUSCAKE_API_TOKEN }}
+          TF_VAR_statuscake_api_token: ${{ secrets.STATUSCAKE_API_TOKEN }}
+
+      # Legger til plan output i pull requests
+      - name: Update Pull Request
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        env:
+          PLAN: "${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            
+            <details><summary>Show Plan</summary>
+            
+            \`\`\`terraform\n
+            ${process.env.PLAN}
+            \`\`\`
+            
+            </details>`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      # Apply kjører kun på main branch
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.TF_DIR }}
+        env:
+          STATUSCAKE_API_TOKEN: ${{ secrets.STATUSCAKE_API_TOKEN }}
+          TF_VAR_statuscake_api_token: ${{ secrets.STATUSCAKE_API_TOKEN }}
