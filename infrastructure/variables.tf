@@ -1,5 +1,4 @@
 #variables.tf
-# Original variables (Task 1-2)
 variable "statuscake_api_token" {
   description = "StatusCake API Token"
   type        = string

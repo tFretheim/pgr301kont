@@ -12,7 +12,6 @@ provider "statuscake" {
   api_token = var.statuscake_api_token
 }
 
-# Original monitoring setup (Task 1-2)
 resource "statuscake_contact_group" "monitoring_group" {
   name            = "PGR301 Monitoring Group"
   email_addresses = var.alert_emails
@@ -40,7 +39,6 @@ resource "statuscake_uptime_check" "website" {
   tags          = var.monitoring_tags
 }
 
-# Module-based monitoring setup (Task 3)
 module "prod_monitoring" {
   source = "./modules/monitoring"
 
@@ -60,6 +58,6 @@ module "dev_monitoring" {
   name_prefix       = "dev"
   website_name      = "dev-site"
   website_url       = "https://dev.vg.no"
-  check_interval    = 600  # 10 minutes for dev
+  check_interval    = 600  
   monitoring_tags   = ["development"]
 }

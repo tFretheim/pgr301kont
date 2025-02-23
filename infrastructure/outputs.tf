@@ -1,5 +1,5 @@
 #outputs.tf
-# Original outputs (Task 1-2)
+# Task 1-2
 output "contact_group_id" {
   description = "ID of the created contact group"
   value       = statuscake_contact_group.monitoring_group.id
@@ -10,7 +10,7 @@ output "uptime_check_id" {
   value       = statuscake_uptime_check.website.id
 }
 
-# Module outputs (Task 3)
+# Task 3
 output "prod_contact_group_id" {
   value = module.prod_monitoring.contact_group_id
 }
