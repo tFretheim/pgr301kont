@@ -1,4 +1,13 @@
 #modules/monitoring/main.tf
+terraform {
+  required_providers {
+    statuscake = {
+      source  = "StatusCakeDev/statuscake"
+      version = "2.2.2"
+    }
+  }
+}
+
 resource "statuscake_contact_group" "alert_group" {
   name            = var.contact_group_name
   email_addresses = var.alert_emails
