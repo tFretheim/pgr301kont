@@ -57,7 +57,7 @@ module "dev_monitoring" {
   alert_emails       = ["tobbekrs@gmail.com"]
   name_prefix       = "dev"
   website_name      = "dev-site"
-  website_url       = "https://dev.vg.no"
+  website_url       = "https://vg.no"
   check_interval    = 600  
   monitoring_tags   = ["development"]
 }
