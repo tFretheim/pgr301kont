@@ -2,33 +2,28 @@
 
 ## Monitoring Configuration Choices
 
-Our monitoring setup has been configured with the following considerations:
+Vår overvåkningsoppsett er konfigurert med følgende betraktninger:
 
-### Check Intervals and Thresholds
-- **Check Interval**: 5 minutes (300 seconds)
-  - Rationale: Provides good balance between timely detection and resource usage
-  - Frequent enough to detect issues quickly
-  - Not so frequent as to create unnecessary load
+Sjekkeintervaller og Terskelverdier
+- Sjekkeintervall: 5 minutter (300 sekunder)
+  - Begrunnelse: Gir god balanse mellom rask oppdaging og ressursbruk
+  - Hyppig nok til å oppdage problemer raskt
+  - Ikke så hyppig at det skaper unødvendig belastning
 
-- **Confirmation Count**: 3 confirmations
-  - Reduces false positives by requiring multiple failed checks
-  - Helps avoid alert fatigue while maintaining reliability
+- Bekreftelsesantall: 3 bekreftelser
+  - Reduserer falske alarmer ved å kreve flere mislykkede sjekker
+  - Hjelper med å unngå alarmtretthet samtidig som påliteligheten opprettholdes
 
-- **Timeout Settings**: 20 seconds
-  - Chosen based on typical web application response times
-  - Long enough to account for slower connections
-  - Short enough to detect significant performance issues
+- Timeout-innstillinger: 20 sekunder
+  - Valgt basert på typiske responstider for webapplikasjoner
+  - Lang nok til å ta hensyn til tregere forbindelser
+  - Kort nok til å oppdage betydelige ytelsesproblem
 
-### HTTP Check Configuration
-- **SSL Validation**: Enabled
-  - Ensures SSL certificates are valid
-  - Critical for security monitoring
+HTTP Sjekk-konfigurasjon
+- SSL-validering: Aktivert
+  - Sikrer at SSL-sertifikater er gyldige
+  - Kritisk for sikkerhetsovervåking
 
-- **Status Codes**: 200, 201, 301, 302
-  - Includes both successful responses and valid redirects
-  - Accommodates common web application patterns
-
-### Contact Group Setup
-- Email notifications for immediate awareness
-- Optional integration with Slack/Teams for team visibility
-- Multiple notification channels for redundancy
+- Statuskoder: 200, 201, 301, 302
+  - Inkluderer både vellykkede svar og gyldige omdirigeringer
+  - Imøtekommer vanlige webapplikasjonsmønstre
