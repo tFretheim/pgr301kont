@@ -1,3 +1,5 @@
+# Jeg har problemer med github actions grunnet feilkode Error 3, etter å ha lett lenge finner jeg ingen løsning på dette.
+
 # StatusCake Monitoring Infrastructure
 
 ## Monitoring Configuration Choices
